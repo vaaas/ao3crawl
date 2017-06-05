@@ -5,4 +5,4 @@ then
 	echo 'usage: crawl.sh start_url count'
 fi
 
-python3 crawler.py "$1" "$2" | gzip --best - >> /var/tmp/ao3log.txt.gz 
+python3 crawler.py "$1" "$2" | xz --verbose - >> /var/tmp/metadata.txt.xz 
