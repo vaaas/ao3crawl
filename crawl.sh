@@ -1,2 +1,8 @@
 #!/bin/sh
-python3 crawler.py "$1" "$2" | gzip --best -f - >> /var/tmp/ao3log.txt.gz 
+
+if test -z "$1" || test -z "$2"
+then
+	echo 'usage: crawl.sh start_url count'
+fi
+
+python3 crawler.py "$1" "$2" | gzip --best - >> /var/tmp/ao3log.txt.gz 

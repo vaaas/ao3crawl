@@ -48,7 +48,7 @@ def exit_gracefully(*args):
 
 def main():
 	url = sys.argv[1] if len(sys.argv) > 1 else HOSTNAME + last_page(parse(get(GENERIC_QUERY)))
-	amount = sys.argv[2] if len(sys.argv) > 2 else 10000
+	amount = int(sys.argv[2]) if len(sys.argv) > 2 else 10000
 	i = 0
 	while i < amount and FLAG:
 		tree = parse(get(url))
