@@ -16,7 +16,9 @@ OPENER.addheaders = [('User-agent', 'Mozilla/5.0 (compatible; polite metadata co
 def get(url):
 	time.sleep(random.random() + 0.5)
 	print(time.ctime(), url, file=sys.stderr)
-	return OPENER.open(url).read()
+	while True:
+		try: return OPENER.open(url, timeout=20).read()
+		except: continue
 
 def parse(string):
 	return html.fromstring(string)
