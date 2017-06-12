@@ -11,3 +11,4 @@ do
 	python3 "$i" < $1 > "outputs/$(basename "$i").txt"
 	echo "$(basename "$i") done"
 done
+echo 'all done'

@@ -8,7 +8,6 @@ import json
 import statistics
 import math
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr as corr
 
 def space():
 	sys.stdout.write("\n\n\n")
@@ -19,9 +18,6 @@ def getsecond(x): return x[1]
 
 def incrkey(dic, key, amount=1):
 	dic[key] = dic[key] + amount if key in dic else amount
-
-def myline(x, multiplier=1, addition=0):
-	return multiplier*x + addition
 
 objs = [parse(line) for line in sys.stdin]
 

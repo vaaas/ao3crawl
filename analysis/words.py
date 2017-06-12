@@ -10,7 +10,7 @@ import json
 import statistics
 import math
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr as corr
+import numpy
 
 def space():
 	sys.stdout.write("\n\n\n")
@@ -22,8 +22,8 @@ def getsecond(x): return x[1]
 def incrkey(dic, key, amount=1):
 	dic[key] = dic[key] + amount if key in dic else amount
 
-def myline(x, multiplier=1, addition=0):
-	return multiplier*x + addition
+def trendfn(x,y):
+	return numpy.poly1d(numpy.polyfit(x,y,1))
 
 objs = [parse(line) for line in sys.stdin]
 
@@ -63,45 +63,43 @@ for work in objs:
 	hpw.append(work["hits"]/work["words"] if work["words"] > 0 else 0)
 
 maxwords = max(words)
-cor = corr(words,hits)
+
+
 plt.scatter(words, hits)
-plt.plot([0,maxwords], [0 + cor[1], maxwords*cor[0] + cor[1]], color="red")
+plt.plot(words, trendfn(words,hits)(words), color="red")
 plt.xlabel("Words in a work")
 plt.ylabel("Hits in a work")
 plt.savefig("figs/wordshitsdistribution.png")
 plt.close()
 
-cor = corr(words,kudos)
 plt.scatter(words,kudos)
-plt.plot([0,maxwords], [0 + cor[1], maxwords*cor[0] + cor[1]], color="red")
+plt.plot(words, trendfn(words,kudos)(words), color="red")
 plt.xlabel("Words in a work")
 plt.ylabel("Kudos in a work")
 plt.savefig("figs/wordskudosdistribution.png")
 plt.close()
 
-cor = corr(words,comments)
-plt.scatter(words,kudos)
-plt.plot([0,maxwords], [0 + cor[1], maxwords*cor[0] + cor[1]], color="red")
+plt.scatter(words,comments)
+plt.plot(words, trendfn(words,comments)(words), color="red")
 plt.xlabel("Words in a work")
 plt.ylabel("Comments in a work")
 plt.savefig("figs/wordscommentsdistribution.png")
 plt.close()
 
-cor = corr(words,bookmarks)
-plt.scatter(words,kudos)
-plt.plot([0,maxwords], [0 + cor[1], maxwords*cor[0] + cor[1]], color="red")
+plt.scatter(words,bookmarks)
+plt.plot(words, trendfn(words,bookmarks)(words), color="red")
 plt.xlabel("Words in a work")
 plt.ylabel("Bookmarks in a work")
 plt.savefig("figs/wordsbookmarksdistribution.png")
 plt.close()
 
-cor = corr(words,hpw)
 plt.scatter(words,hpw)
-plt.plot([0,maxwords], [0 + cor[1], maxwords*cor[0] + cor[1]], color="red")
+plt.plot(words, trendfn(words,hpw)(words), color="red")
 plt.xlabel("Words in a work")
 plt.ylabel("Hits per word in a work")
-plt.savefig("figs/wordsreturnsdistribution.png")
-plt.close()
+#plt.savefig("figs/wordsreturnsdistribution.png")
+#plt.close()
+plt.show()
 
 swords = sorted(words)
 length = len(swords)
@@ -150,10 +148,11 @@ for work in objs:
 
 fandom_corr = dict()
 for fandom in fandom_wh:
-	fandom_corr[fandom] = corr([x[0] for x in fandom_wh[fandom]], [x[1] for x in fandom_wh[fandom]])[0]
+	fandom_corr[fandom] = statistics.mean([(x[1]/x[0] if x[0] != 0 else 0) for x in fandom_wh[fandom]])
 
 rankings = [(fandom, fandom_corr[fandom]) for fandom in fandom_corr]
 rankings.sort(key=getsecond, reverse=True)
 print("The fandoms which reward verbosity the most are:")
 for tup in rankings[:10]:
 	print("%s: %f" % tup)
+

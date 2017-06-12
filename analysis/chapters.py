@@ -8,7 +8,7 @@ import json
 import statistics
 import math
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr as corr
+import numpy
 
 def space():
 	sys.stdout.write("\n\n\n")
@@ -20,8 +20,8 @@ def getsecond(x): return x[1]
 def incrkey(dic, key, amount=1):
 	dic[key] = dic[key] + amount if key in dic else amount
 
-def myline(x, multiplier=1, addition=0):
-	return multiplier*x + addition
+def trendfn(x,y):
+	return numpy.poly1d(numpy.polyfit(x,y,1))
 
 objs = [parse(line) for line in sys.stdin]
 
@@ -40,33 +40,29 @@ for work in objs:
 
 maxchapters = max(chapters)
 
-cor = corr(chapters,hits)
 plt.scatter(chapters, hits)
-plt.plot([0,maxchapters], [0 + cor[1], maxchapters*cor[0] + cor[1]], color="red")
+plt.plot(chapters, trendfn(chapters,hits)(chapters), color="red")
 plt.xlabel("Chapters in a work")
 plt.ylabel("Hits in a work")
 plt.savefig("figs/chaptershitsdistribution.png")
 plt.close()
 
-cor = corr(chapters,kudos)
 plt.scatter(chapters, kudos)
-plt.plot([0,maxchapters], [0 + cor[1], maxchapters*cor[0] + cor[1]], color="red")
+plt.plot(chapters, trendfn(chapters,kudos)(chapters), color="red")
 plt.xlabel("Chapters in a work")
 plt.ylabel("kudos in a work")
 plt.savefig("figs/chapterskudosdistribution.png")
 plt.close()
 
-cor = corr(chapters,comments)
 plt.scatter(chapters, comments)
-plt.plot([0,maxchapters], [0 + cor[1], maxchapters*cor[0] + cor[1]], color="red")
+plt.plot(chapters, trendfn(chapters,comments)(chapters), color="red")
 plt.xlabel("Chapters in a work")
 plt.ylabel("comments in a work")
 plt.savefig("figs/chapterscommentsdistribution.png")
 plt.close()
 
-cor = corr(chapters,bookmarks)
 plt.scatter(chapters, bookmarks)
-plt.plot([0,maxchapters], [0 + cor[1], maxchapters*cor[0] + cor[1]], color="red")
+plt.plot(chapters, trendfn(chapters,comments)(chapters), color="red")
 plt.xlabel("Chapters in a work")
 plt.ylabel("bookmarks in a work")
 plt.savefig("figs/chaptersbookmarksdistribution.png")
