@@ -31,6 +31,7 @@ for work in objs:
 		stats[category].append({"hits": work["hits"], "kudos": work["kudos"], "bookmarks": work["bookmarks"], "comments": work["comments"]})
 
 for category in stats:
+	print("Total works in category %s is: %d" %(category, len(stats[category])))
 	for thing in ["hits", "kudos", "bookmarks", "comments"]:
 		stuff = [x[thing] for x in stats[category]]
 		mean = statistics.mean(stuff)

@@ -37,6 +37,7 @@ for work in objs:
 		warnums[warning].append({"hits": work["hits"], "kudos": work["kudos"], "bookmarks": work["bookmarks"], "comments": work["comments"]})
 
 for warning in warnums:
+	print("Total works with warning %s is: %d" %(warning, len(warnums[warning])))
 	for thing in ["hits", "kudos", "bookmarks", "comments"]:
 		stuff = [x[thing] for x in warnums[warning]]
 		mean = statistics.mean(stuff)

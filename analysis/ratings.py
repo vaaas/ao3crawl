@@ -35,11 +35,16 @@ for work in objs:
 viable_fandoms = { fandom for fandom in fandom_counter if fandom_counter[fandom] >= 100 }
 
 for rating in ratings:
+	print("Total works with rating %s is: %d" %(rating, len([True for work in objs if work["rating"] == rating])))
 	for number in ["hits", "kudos", "bookmarks", "comments"]:
 		lst = [work[number] for work in objs if work["rating"] == rating]
 		mean = statistics.mean(lst)
+		median = statistics.median(lst)
+		mode = statistics.mode(lst)
 		print("Mean %s for works rated %s: %f" %(number, rating, mean))
-space()
+		print("Median %s for works warned %s is: %f" %(number, rating, median))
+		print("Mode %s for works warned %s is: %f" %(number, rating, mode))
+		space()
 
 fandomworks = dict()
 for work in objs:
