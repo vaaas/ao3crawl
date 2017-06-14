@@ -71,5 +71,5 @@ for work in objs:
 rankings = [(fandom, fcomms[fandom] / fandom_counter[fandom]) for fandom in fcomms]
 rankings.sort(key=getsecond, reverse=True)
 print("The fandoms which comment the most on average are:")
-for tup in rankings[:10]:
+for tup in rankings[:20]:
 	print("%s: %f" % tup)
